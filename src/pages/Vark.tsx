@@ -1,351 +1,10 @@
-// "use client"
-
-// import { useState } from "react"
-// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-// import { Button } from "@/components/ui/button"
-// import { Checkbox } from "@/components/ui/checkbox"
-// import { Progress } from "@/components/ui/progress"
-// import { ChevronLeft, ChevronRight } from "lucide-react"
-
-// // Types
-// type VarkScores = {
-//   Visual: number
-//   Aural: number
-//   Read_Write: number
-//   Kinesthetic: number
-// }
-
-// type LearningPreference = "Visual" | "Aural" | "Read/Write" | "Kinesthetic" | "Multimodal"
-
-// type Question = {
-//   id: number
-//   text: string
-//   options: {
-//     value: string
-//     label: string
-//   }[]
-// }
-
-// // Sample data
-// const VARK_QUESTIONS: Question[] = [
-//   {
-//     id: 1,
-//     text: "When I need directions for traveling, I usually:",
-//     options: [
-//       { value: "V", label: "Look at a map" },
-//       { value: "A", label: "Ask for spoken directions" },
-//       { value: "R", label: "Write down the directions" },
-//       { value: "K", label: "Follow my instincts and maybe use a compass" },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     text: "When I am teaching someone something new, I tend to:",
-//     options: [
-//       { value: "V", label: "Show them visual aids or diagrams" },
-//       { value: "A", label: "Explain it to them verbally" },
-//       { value: "R", label: "Give them something to read" },
-//       { value: "K", label: "Demonstrate and let them try it" },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     text: "When I'm learning something new, I prefer:",
-//     options: [
-//       { value: "V", label: "Visual materials like diagrams and charts" },
-//       { value: "A", label: "Listening to lectures or discussions" },
-//       { value: "R", label: "Reading textbooks or articles" },
-//       { value: "K", label: "Hands-on activities and practical exercises" },
-//     ],
-//   },
-//   {
-//     id: 4,
-//     text: "I remember things best when I:",
-//     options: [
-//       { value: "V", label: "See pictures or visualize the information" },
-//       { value: "A", label: "Hear the information or discuss it" },
-//       { value: "R", label: "Write notes or read material several times" },
-//       { value: "K", label: "Do something physical with the information" },
-//     ],
-//   },
-//   {
-//     id: 5,
-//     text: "When solving problems, I prefer to:",
-//     options: [
-//       { value: "V", label: "Look at diagrams or visual representations" },
-//       { value: "A", label: "Talk through possible solutions" },
-//       { value: "R", label: "Read through instructions or guidelines" },
-//       { value: "K", label: "Try different approaches and see what works" },
-//     ],
-//   },
-//   {
-//     id: 6,
-//     text: "When I need to remember a phone number, I usually:",
-//     options: [
-//       { value: "V", label: "Visualize the number pattern on the keypad" },
-//       { value: "A", label: "Say it out loud repeatedly" },
-//       { value: "R", label: "Write it down" },
-//       { value: "K", label: "Type it into my phone or dial it several times" },
-//     ],
-//   },
-//   {
-//     id: 7,
-//     text: "I prefer instructors who:",
-//     options: [
-//       { value: "V", label: "Use visual aids like diagrams and charts" },
-//       { value: "A", label: "Give clear verbal explanations" },
-//       { value: "R", label: "Provide handouts or textbook references" },
-//       { value: "K", label: "Include hands-on activities or demonstrations" },
-//     ],
-//   },
-// ]
-
-// // Helper functions
-// const calculateVarkScores = (selectedOptions: Record<number, string[]>): VarkScores => {
-//   const scores = {
-//     Visual: 0,
-//     Aural: 0,
-//     Read_Write: 0,
-//     Kinesthetic: 0,
-//   }
-
-//   Object.values(selectedOptions).forEach((options) => {
-//     options.forEach((option) => {
-//       if (option === "V") scores.Visual++
-//       if (option === "A") scores.Aural++
-//       if (option === "R") scores.Read_Write++
-//       if (option === "K") scores.Kinesthetic++
-//     })
-//   })
-
-//   return scores
-// }
-
-// const determineLearningPreference = (scores: VarkScores): LearningPreference => {
-//   const entries = Object.entries(scores) as [keyof VarkScores, number][]
-//   const maxScore = Math.max(...entries.map(([_, score]) => score))
-//   const maxCategories = entries.filter(([_, score]) => score === maxScore).map(([category]) => category)
-
-//   if (maxCategories.length > 1) return "Multimodal"
-
-//   if (maxCategories[0] === "Visual") return "Visual"
-//   if (maxCategories[0] === "Aural") return "Aural"
-//   if (maxCategories[0] === "Read_Write") return "Read/Write"
-//   return "Kinesthetic"
-// }
-
-// const getLearningPreferenceNote = (preference: LearningPreference): string => {
-//   switch (preference) {
-//     case "Visual":
-//       return "You prefer visual learning methods such as diagrams, charts, and maps. Try using color-coding, highlighting, and visual organizers when studying."
-//     case "Aural":
-//       return "You learn best through listening and speaking. Consider recording lectures, participating in discussions, and explaining concepts out loud."
-//     case "Read/Write":
-//       return "You prefer learning through reading and writing. Take detailed notes, rewrite information in your own words, and use lists to organize your thoughts."
-//     case "Kinesthetic":
-//       return "You learn best through hands-on experiences. Try practical exercises, role-playing, and physical activities to reinforce learning."
-//     case "Multimodal":
-//       return "You have multiple strong learning preferences. This gives you flexibility to learn in different ways depending on the context."
-//     default:
-//       return ""
-//   }
-// }
-
-// export default function VarkQuestionnaire() {
-//   const [selectedOptions, setSelectedOptions] = useState<Record<number, string[]>>({})
-//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-//   const [results, setResults] = useState<{
-//     scores: VarkScores | null
-//     preference: LearningPreference | null
-//     note: string | null
-//   }>({
-//     scores: null,
-//     preference: null,
-//     note: null,
-//   })
-
-//   const handleOptionSelect = (questionId: number, optionValue: string) => {
-//     setSelectedOptions((prev) => {
-//       const currentSelections = prev[questionId] || []
-//       const updatedSelections = currentSelections.includes(optionValue)
-//         ? currentSelections.filter((val) => val !== optionValue)
-//         : [...currentSelections, optionValue]
-
-//       return { ...prev, [questionId]: updatedSelections }
-//     })
-//   }
-
-//   const goToNextQuestion = () => {
-//     if (currentQuestionIndex < VARK_QUESTIONS.length - 1) {
-//       setCurrentQuestionIndex((prev) => prev + 1)
-//     }
-//   }
-
-//   const goToPreviousQuestion = () => {
-//     if (currentQuestionIndex > 0) {
-//       setCurrentQuestionIndex((prev) => prev - 1)
-//     }
-//   }
-
-//   const submitQuestionnaire = () => {
-//     // Validation
-//     if (Object.keys(selectedOptions).length !== VARK_QUESTIONS.length) {
-//       const missingQuestions = VARK_QUESTIONS.filter(
-//         (q) => !selectedOptions[q.id] || selectedOptions[q.id].length === 0,
-//       ).map((q) => q.id)
-
-//       alert(`Please select at least one option for question(s): ${missingQuestions.join(", ")}`)
-//       return
-//     }
-
-//     const scores = calculateVarkScores(selectedOptions)
-//     const preference = determineLearningPreference(scores)
-//     const note = getLearningPreferenceNote(preference)
-//     setResults({ scores, preference, note })
-//   }
-
-//   const resetQuestionnaire = () => {
-//     setSelectedOptions({})
-//     setCurrentQuestionIndex(0)
-//     setResults({
-//       scores: null,
-//       preference: null,
-//       note: null,
-//     })
-//   }
-
-//   const currentQuestion = VARK_QUESTIONS[currentQuestionIndex]
-//   const progress = (Object.keys(selectedOptions).length / VARK_QUESTIONS.length) * 100
-//   const isCurrentQuestionAnswered = selectedOptions[currentQuestion.id]?.length > 0
-//   const isLastQuestion = currentQuestionIndex === VARK_QUESTIONS.length - 1
-
-//   return (
-//     <div className="min-h-screen bg-[#f0f9f0] flex items-center justify-center p-4">
-//       <Card className="w-full max-w-2xl shadow-lg border-emerald-100">
-//         <CardHeader className="bg-emerald-600 text-white text-center rounded-t-lg">
-//           <CardTitle className="text-2xl font-bold">VARK Questionnaire</CardTitle>
-//           <CardDescription className="text-emerald-50">How Do I Learn Best?</CardDescription>
-//         </CardHeader>
-
-//         {!results.preference ? (
-//           <>
-//             <CardContent className="p-6 pt-8">
-//               <div className="mb-6">
-//                 <div className="flex justify-between text-sm text-emerald-700 mb-2">
-//                   <span>Progress</span>
-//                   <span>{Math.round(progress)}%</span>
-//                 </div>
-//                 <Progress value={progress} className="h-2 bg-emerald-100" indicatorClassName="bg-emerald-500" />
-//               </div>
-
-//               <div className="mb-6">
-//                 <h3 className="text-lg font-semibold mb-4 text-emerald-800">
-//                   Question {currentQuestionIndex + 1} of {VARK_QUESTIONS.length}
-//                 </h3>
-//                 <p className="text-lg font-medium mb-4 text-emerald-900">{currentQuestion.text}</p>
-
-//                 <div className="space-y-3 mt-4">
-//                   {currentQuestion.options.map((option) => (
-//                     <div
-//                       key={option.value}
-//                       className={`flex items-start space-x-3 p-4 rounded-lg border transition-all ${
-//                         selectedOptions[currentQuestion.id]?.includes(option.value)
-//                           ? "bg-emerald-50 border-emerald-400 shadow-sm"
-//                           : "border-gray-200 hover:border-emerald-200"
-//                       }`}
-//                     >
-//                       <Checkbox
-//                         id={`q${currentQuestion.id}-${option.value}`}
-//                         checked={selectedOptions[currentQuestion.id]?.includes(option.value) || false}
-//                         onCheckedChange={() => handleOptionSelect(currentQuestion.id, option.value)}
-//                         className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
-//                       />
-//                       <label
-//                         htmlFor={`q${currentQuestion.id}-${option.value}`}
-//                         className="text-base cursor-pointer leading-tight"
-//                       >
-//                         {option.label}
-//                       </label>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-//             </CardContent>
-
-//             <CardFooter className="flex justify-between p-6 pt-0">
-//               <Button
-//                 variant="outline"
-//                 onClick={goToPreviousQuestion}
-//                 disabled={currentQuestionIndex === 0}
-//                 className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
-//               >
-//                 <ChevronLeft className="w-4 h-4 mr-2" />
-//                 Previous
-//               </Button>
-
-//               {isLastQuestion ? (
-//                 <Button
-//                   onClick={submitQuestionnaire}
-//                   disabled={!isCurrentQuestionAnswered}
-//                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
-//                 >
-//                   Submit Questionnaire
-//                 </Button>
-//               ) : (
-//                 <Button
-//                   onClick={goToNextQuestion}
-//                   disabled={!isCurrentQuestionAnswered}
-//                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
-//                 >
-//                   Next
-//                   <ChevronRight className="w-4 h-4 ml-2" />
-//                 </Button>
-//               )}
-//             </CardFooter>
-//           </>
-//         ) : (
-//           <CardContent className="p-6">
-//             <div className="text-center mb-6">
-//               <h2 className="text-2xl font-bold mb-2 text-emerald-700">Your Learning Preference</h2>
-//               <div className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-full text-xl font-semibold">
-//                 {results.preference}
-//               </div>
-//             </div>
-
-//             <div className="bg-emerald-50 p-6 rounded-lg border border-emerald-100 mb-6">
-//               <h3 className="text-xl font-semibold mb-4 text-emerald-800">Your VARK Scores</h3>
-//               <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-//                 {Object.entries(results.scores || {}).map(([key, value]) => (
-//                   <div key={key} className="bg-white p-4 rounded-lg shadow-sm border border-emerald-100">
-//                     <p className="font-medium text-emerald-700 text-sm">{key.replace("_", "/")}</p>
-//                     <p className="text-emerald-600 font-bold text-2xl">{value}</p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-
-//             <div className="bg-white p-6 rounded-lg border border-emerald-100 mb-6">
-//               <h3 className="text-lg font-semibold mb-2 text-emerald-800">What This Means</h3>
-//               <p className="text-emerald-700">{results.note}</p>
-//             </div>
-
-//             <Button onClick={resetQuestionnaire} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-//               Take Questionnaire Again
-//             </Button>
-//           </CardContent>
-//         )}
-//       </Card>
-//     </div>
-//   )
-// }
-
-"use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useAuth } from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
 
 // Types
 type VarkScores = {
@@ -366,7 +25,6 @@ type Question = {
   }[]
 }
 
-// Replace the VARK_QUESTIONS array with this expanded 16-question version
 const VARK_QUESTIONS: Question[] = [
   {
     id: 1,
@@ -530,10 +188,6 @@ const VARK_QUESTIONS: Question[] = [
   },
 ]
 
-// Update the state to use string instead of string[] for single selection
-// const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({})
-
-// Helper functions
 const calculateVarkScores = (selectedOptions: Record<number, string>): VarkScores => {
   const scores = {
     Visual: 0,
@@ -595,7 +249,6 @@ export default function VarkQuestionnaire() {
     note: null,
   })
 
-  // Update the handleOptionSelect function to handle radio button selection (single selection)
   const handleOptionSelect = (questionId: number, optionValue: string) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -615,7 +268,6 @@ export default function VarkQuestionnaire() {
     }
   }
 
-  // Update the validation in submitQuestionnaire
   const submitQuestionnaire = () => {
     // Validation
     if (Object.keys(selectedOptions).length !== VARK_QUESTIONS.length) {
@@ -643,9 +295,19 @@ export default function VarkQuestionnaire() {
 
   const currentQuestion = VARK_QUESTIONS[currentQuestionIndex]
   const progress = (Object.keys(selectedOptions).length / VARK_QUESTIONS.length) * 100
-  // Update the isCurrentQuestionAnswered check
   const isCurrentQuestionAnswered = !!selectedOptions[currentQuestion.id]
   const isLastQuestion = currentQuestionIndex === VARK_QUESTIONS.length - 1
+
+  //Protected Route
+ const { userId, isLoaded } = useAuth();
+ const navigate = useNavigate(); 
+
+ useEffect(() => {
+   if(isLoaded && !userId){
+     navigate("/sign-in");
+   }
+ }, [userId, isLoaded, navigate]);
+
 
   return (
     <div className="min-h-screen bg-[#f0f9f0] flex items-center justify-center p-4">

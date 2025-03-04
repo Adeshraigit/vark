@@ -111,7 +111,7 @@ const HeroParallax = () => {
             className="mt-10"
           >
             <BackgroundGradient>
-              <a href="/vark-questionnaire">
+              <a href="/questionnaire">
                 <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-lg">
                   Start Questionnaire <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -326,7 +326,7 @@ export default function Home() {
                 />
 
                 <div className="mt-10">
-                  <a href="/vark-questionnaire">
+                  <a href="/questionnaire">
                     <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white">
                       Take the Questionnaire <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
@@ -402,7 +402,7 @@ export default function Home() {
                   Take the VARK questionnaire today and unlock your full learning potential.
                 </p>
                 <BackgroundGradient>
-                  <a href="/vark-questionnaire">
+                  <a href="/questionnaire">
                     <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50 px-8 py-6 text-lg">
                       Start the Questionnaire <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
@@ -413,57 +413,6 @@ export default function Home() {
           </div>
         </section>
       </SparklesBackground>
-
-      {/* Footer */}
-      <footer className="bg-emerald-900 text-emerald-50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">VARK Learning Styles</h3>
-              <p className="mb-4">
-                Discover your unique learning preferences and optimize your educational journey with our comprehensive
-                VARK assessment.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick as</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    About VARK
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Learning Resources
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    For Educators
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Research
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2">
-                <li>support@varklearning.com</li>
-                <li>1-800-LEARN-VARK</li>
-                <li>123 Education Ave, Learning City</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-emerald-800 mt-8 pt-8 text-center text-sm">
-            <p>© {new Date().getFullYear()} VARK Learning Styles. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
