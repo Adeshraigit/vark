@@ -25,8 +25,8 @@ function Navbar() {
         <div className="hidden md:flex space-x-8 text-lg">
           <Link to="/" className="hover:text-white transition-all duration-300">Home</Link>
           <Link to="/about" className="hover:text-white transition-all duration-300">About</Link>
-          <Link to="/resources" className="hover:text-white transition-all duration-300">Resources</Link>
           <Link to="/contact" className="hover:text-white transition-all duration-300">Contact</Link>
+          <Link to="/resources" className="hover:text-white transition-all duration-300">Resources</Link>
         </div>
         
         {/* Authentication & Mobile Menu Button */}
@@ -55,8 +55,8 @@ function Navbar() {
           <ul className="text-center space-y-4 text-lg">
             <li><Link to="/" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Home</Link></li>
             <li><Link to="/about" onClick={closeMenu} className="block hover:text-white transition-all duration-300">About</Link></li>
-            <li><Link to="/resources" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Resources</Link></li>
             <li><Link to="/contact" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Contact</Link></li>
+            <li><Link to="/resources" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Resources</Link></li>
             {!isSignedIn && (
               <li>
                 <Link

@@ -4,6 +4,8 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import RootLayout from './Layout/RootLayout.tsx'
 import Vark from './pages/Vark'
 import Home from './pages/Home'
+import { About } from './pages/About.tsx';
+import { Contact } from './pages/Contact.tsx';
 import SignInPage from './components/auth/SignIn.tsx';
 import SignUpPage from './components/auth/SignUp.tsx';
 
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
         element: <SignUpPage />,
         path: '/sign-up/*'
       },
+      {
+        path: "/about",
+        element: <About/>
+      },
+      {
+        path: "/contact",
+        element: <Contact/>
+      }
     ]
   }
 ]);

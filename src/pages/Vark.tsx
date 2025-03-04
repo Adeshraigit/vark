@@ -327,7 +327,7 @@ export default function VarkQuestionnaire() {
                   <span>Progress</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
-                <Progress value={progress} className="h-2 bg-emerald-100" indicatorClassName="bg-emerald-500" />
+                <Progress value={progress} className="h-2 bg-emerald-100" />
               </div>
 
               <div className="mb-6">
