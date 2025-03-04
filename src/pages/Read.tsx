@@ -63,12 +63,12 @@ const Read: React.FC = () => {
   };
 
   return (
-    <section className="pt-32 pb-16 bg-gray-100">
+    <section className="pt-32 pb-16 bg-green-100">
       <div className="max-w-2xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Ask Your Question</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 text-green-800">Ask Your Question</h2>
         <form onSubmit={(e) => { e.preventDefault(); submitQuery(message); }} className="space-y-6">
           <textarea
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             placeholder="Enter your question here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -78,22 +78,22 @@ const Read: React.FC = () => {
 
           {/* Custom Dropdown */}
           <div>
-            <label className="block mb-2 font-semibold">Preferred Learning Style:</label>
+            <label className="block mb-2 font-semibold text-green-900">Preferred Learning Style:</label>
             <Listbox value={selectedStyle} onChange={setSelectedStyle}>
               <div className="relative">
-                <Listbox.Button className="w-full bg-white border border-gray-300 rounded-lg shadow-md px-4 py-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                <Listbox.Button className="w-full bg-white border border-green-300 rounded-lg shadow-md px-4 py-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-green-600">
                   {selectedStyle.name}
-                  <ChevronDown className="h-5 w-5 text-gray-500" />
+                  <ChevronDown className="h-5 w-5 text-green-500" />
                 </Listbox.Button>
 
-                <Listbox.Options className="absolute mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto z-10">
+                <Listbox.Options className="absolute mt-2 w-full bg-white border border-green-300 rounded-lg shadow-lg max-h-60 overflow-auto z-10">
                   {learningStyles.map((style) => (
                     <Listbox.Option
                       key={style.id}
                       value={style}
                       className={({ active }) =>
                         `cursor-pointer px-4 py-3 ${
-                          active ? "bg-indigo-500 text-white" : "text-gray-900"
+                          active ? "bg-green-500 text-white" : "text-gray-900"
                         } flex items-center justify-between`
                       }
                     >
@@ -113,15 +113,15 @@ const Read: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Loading..." : "Submit"}
           </button>
         </form>
 
         {responseData && (
-          <div className="mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-4">Response</h3>
+          <div className="mt-10 p-6 bg-white rounded-lg shadow-md border border-green-200">
+            <h3 className="text-2xl font-bold mb-4 text-green-800">Response</h3>
             <div className="prose max-w-none mb-6">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {highlightKeywords(responseData.answer)}
@@ -130,13 +130,13 @@ const Read: React.FC = () => {
 
             {responseData.sources && responseData.sources.length > 0 && (
               <div className="mb-6">
-                <h4 className="font-semibold text-lg mb-2">Sources:</h4>
+                <h4 className="font-semibold text-lg mb-2 text-green-800">Sources:</h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {responseData.sources.map((source, index) => (
                     <li key={index}>
                       <a
                         href={source.link}
-                        className="text-indigo-600 hover:underline"
+                        className="text-green-600 hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -150,12 +150,12 @@ const Read: React.FC = () => {
 
             {responseData.followUpQuestions && responseData.followUpQuestions.length > 0 && (
               <div>
-                <h4 className="font-semibold text-lg mb-2">Follow-Up Questions:</h4>
+                <h4 className="font-semibold text-lg mb-2 text-green-800">Follow-Up Questions:</h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {responseData.followUpQuestions.map((q, index) => (
                     <li
                       key={index}
-                      className="cursor-pointer text-indigo-600 hover:underline"
+                      className="cursor-pointer text-green-600 hover:underline"
                       onClick={() => submitQuery(q)}
                     >
                       {q}

@@ -203,9 +203,9 @@ const Audio: React.FC = () => {
   };
 
   return (
-    <section className="pt-32 pb-16 bg-gray-100">
+    <section className="pt-32 pb-16 bg-green-100">
       <div className="max-w-2xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Speech Synthesis</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 text-green-800">Speech Synthesis</h2>
 
         <form
           onSubmit={(e) => {
@@ -215,7 +215,7 @@ const Audio: React.FC = () => {
           className="space-y-6"
         >
           <textarea
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             placeholder="Enter your question here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -225,22 +225,22 @@ const Audio: React.FC = () => {
 
           {/* Custom Dropdown for Preferred Learning Style */}
           <div>
-            <label className="block mb-2 font-semibold">Preferred Learning Style:</label>
+            <label className="block mb-2 font-semibold text-green-900">Preferred Learning Style:</label>
             <Listbox value={selectedStyle} onChange={setSelectedStyle}>
               <div className="relative">
-                <Listbox.Button className="w-full bg-white border border-gray-300 rounded-lg shadow-md px-4 py-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                <Listbox.Button className="w-full bg-white border border-green-300 rounded-lg shadow-md px-4 py-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-green-600">
                   {selectedStyle.name}
-                  <ChevronDown className="h-5 w-5 text-gray-500" />
+                  <ChevronDown className="h-5 w-5 text-green-500" />
                 </Listbox.Button>
 
-                <Listbox.Options className="absolute mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto z-10">
+                <Listbox.Options className="absolute mt-2 w-full bg-white border border-green-300 rounded-lg shadow-lg max-h-60 overflow-auto z-10">
                   {learningStyles.map((style) => (
                     <Listbox.Option
                       key={style.id}
                       value={style}
                       className={({ active }) =>
                         `cursor-pointer px-4 py-3 ${
-                          active ? "bg-indigo-500 text-white" : "text-gray-900"
+                          active ? "bg-green-500 text-white" : "text-gray-900"
                         } flex items-center justify-between`
                       }
                     >
@@ -260,7 +260,7 @@ const Audio: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Loading..." : "Submit"}
           </button>
@@ -288,9 +288,9 @@ const Audio: React.FC = () => {
                   handleSeek(sliderValue);
                   setIsDragging(false);
                 }}
-                className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer"
+                className="w-full h-2 bg-green-200 rounded-full appearance-none cursor-pointer"
               />
-              <div className="flex justify-between text-sm text-gray-600 mt-1">
+              <div className="flex justify-between text-sm text-green-600 mt-1">
                 <span>{`${Math.floor(currentTime)}s`}</span>
                 <span>{`${Math.floor(totalDuration)}s`}</span>
               </div>
@@ -301,7 +301,7 @@ const Audio: React.FC = () => {
               {/* Restart Button */}
               <button
                 onClick={() => responseData && speakText(responseData.answer, 0)}
-                className="p-3 bg-blue-500 text-white rounded-full hover:scale-105 transition-all"
+                className="p-3 bg-green-500 text-white rounded-full hover:scale-105 transition-all"
                 title="Restart"
               >
                 <RefreshCw size={24} />
@@ -310,7 +310,7 @@ const Audio: React.FC = () => {
               {isPlaying ? (
                 <button
                   onClick={pauseSpeech}
-                  className="p-3 bg-yellow-500 text-white rounded-full hover:scale-105 transition-all"
+                  className="p-3 bg-lime-500 text-white rounded-full hover:scale-105 transition-all"
                   title="Pause"
                 >
                   <Pause size={24} />
@@ -324,7 +324,7 @@ const Audio: React.FC = () => {
                       speakText(responseData.answer, currentTime);
                     }
                   }}
-                  className="p-3 bg-green-500 text-white rounded-full hover:scale-105 transition-all"
+                  className="p-3 bg-emerald-500 text-white rounded-full hover:scale-105 transition-all"
                   title="Play"
                 >
                   <Play size={24} />
@@ -351,17 +351,17 @@ const Audio: React.FC = () => {
                     }
                   }}
                 >
-                  <Listbox.Button className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-sm">
+                  <Listbox.Button className="px-2 py-1 bg-green-100 border border-green-300 rounded-md text-sm">
                     {selectedRate.label}
-                    <ChevronDown className="inline h-4 w-4 ml-1 text-gray-600" />
+                    <ChevronDown className="inline h-4 w-4 ml-1 text-green-600" />
                   </Listbox.Button>
-                  <Listbox.Options className="absolute z-10 mt-1 w-20 bg-white border border-gray-300 rounded-md shadow-lg">
+                  <Listbox.Options className="absolute z-10 mt-1 w-20 bg-white border border-green-300 rounded-md shadow-lg">
                     {playbackOptions.map((option) => (
                       <Listbox.Option key={option.value} value={option}>
                         {({ active }) => (
                           <div
                             className={`cursor-pointer px-2 py-1 text-sm ${
-                              active ? "bg-indigo-500 text-white" : "text-gray-900"
+                              active ? "bg-green-500 text-white" : "text-gray-900"
                             }`}
                           >
                             {option.label}
@@ -378,16 +378,16 @@ const Audio: React.FC = () => {
 
         {/* Display Sources & Follow-Up Questions */}
         {responseData && (
-          <div className="mt-10 p-6 bg-white rounded-lg shadow-md">
+          <div className="mt-10 p-6 bg-white rounded-lg shadow-md border border-green-200">
             {responseData.sources && responseData.sources.length > 0 && (
               <div className="mb-6">
-                <h4 className="font-semibold text-lg mb-2">Sources:</h4>
+                <h4 className="font-semibold text-lg mb-2 text-green-800">Sources:</h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {responseData.sources.map((source, index) => (
                     <li key={index}>
                       <a
                         href={source.link}
-                        className="text-indigo-600 hover:underline"
+                        className="text-green-600 hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -401,12 +401,12 @@ const Audio: React.FC = () => {
 
             {responseData.followUpQuestions && responseData.followUpQuestions.length > 0 && (
               <div>
-                <h4 className="font-semibold text-lg mb-2">Follow-Up Questions:</h4>
+                <h4 className="font-semibold text-lg mb-2 text-green-800">Follow-Up Questions:</h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {responseData.followUpQuestions.map((q, index) => (
                     <li
                       key={index}
-                      className="cursor-pointer text-indigo-600 hover:underline"
+                      className="cursor-pointer text-green-600 hover:underline"
                       onClick={() => submitQuery(q)}
                     >
                       {q}

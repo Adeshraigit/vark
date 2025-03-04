@@ -6,6 +6,10 @@ import Vark from './pages/Vark'
 import Home from './pages/Home'
 import { About } from './pages/About.tsx';
 import { Contact } from './pages/Contact.tsx';
+import Visual from './pages/Visual.tsx';  
+import Audio from './pages/Audio.tsx';
+import Read from './pages/Read.tsx';
+import Kinesthetic from './pages/Kinesthetic.tsx';
 import SignInPage from './components/auth/SignIn.tsx';
 import SignUpPage from './components/auth/SignUp.tsx';
 
@@ -37,6 +41,22 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact/>
+      }, 
+      {
+        path: "/visual",
+        element: <Visual/>
+      },
+      {
+        path: "/audio",
+        element: <Audio/>
+      },
+      {
+        path: "/read",
+        element: <Read/>
+      },
+      {
+        path: "/kinesthetic",
+        element: <Kinesthetic/>
       }
     ]
   }

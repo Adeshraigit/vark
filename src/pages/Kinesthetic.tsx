@@ -58,37 +58,35 @@ const Kinesthetic: React.FC = () => {
   };
 
   return (
-    <section className="pt-32 pb-16 bg-gray-100">
+    <section className="pt-32 pb-16 bg-green-100">
       <div className="max-w-2xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Ask Your Kinesthetic Question</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 text-green-800">Ask Your Kinesthetic Question</h2>
         <form onSubmit={(e) => { e.preventDefault(); submitQuery(message); }} className="space-y-6">
           <textarea
-            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             placeholder="Enter your question here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={4}
             required
           />
-
-          <button
+            <button
             type="submit"
             disabled={loading}
-            className="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Loading..." : "Submit"}
           </button>
         </form>
-
-        {responseData && (
-          <div className="mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-4">Response</h3>
+         {responseData && (
+          <div className="mt-10 p-6 bg-white rounded-lg shadow-md border border-green-200">
+            <h3 className="text-2xl font-bold mb-4 text-green-800">Response</h3>
             <div className="prose max-w-none mb-6">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  a: ({ ...props }) => <a {...props} style={{ color: 'blue' }} target="_blank" rel="noopener noreferrer" />,
-                  // Ensure links are rendered in blue
+                  a: ({ ...props }) => <a {...props} style={{ color: 'green' }} target="_blank" rel="noopener noreferrer" />,
+                  // Ensure links are rendered in green
                   strong: ({ children }) => <span>{children}</span>,
                   em: ({ children }) => <span>{children}</span>,
                 }}
@@ -96,15 +94,14 @@ const Kinesthetic: React.FC = () => {
                 {highlightKeywords(responseData.answer)}
               </ReactMarkdown>
             </div>
-
-            {responseData.followUpQuestions && responseData.followUpQuestions.length > 0 && (
+             {responseData.followUpQuestions && responseData.followUpQuestions.length > 0 && (
               <div>
-                <h4 className="font-semibold text-lg mb-2">Follow-Up Questions:</h4>
+                <h4 className="font-semibold text-lg mb-2 text-green-800">Follow-Up Questions:</h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {responseData.followUpQuestions.map((q, index) => (
                     <li
                       key={index}
-                      className="cursor-pointer text-indigo-600 hover:underline"
+                      className="cursor-pointer text-green-600 hover:underline"
                       onClick={() => submitQuery(q)}
                     >
                       {q}
