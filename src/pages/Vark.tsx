@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -249,7 +249,7 @@ export default function VarkQuestionnaire() {
     note: null,
   });
 
-  const { userId } = useAuth(); // Get the user ID from Clerk
+  
 
   const handleOptionSelect = (questionId: number, optionValue: string) => {
     setSelectedOptions((prev) => ({
@@ -271,7 +271,6 @@ export default function VarkQuestionnaire() {
   };
 
   const sendResultsToBackend = async (results: {
-    scores: VarkScores;
     preference: LearningPreference;
   }) => {
     try {
@@ -279,21 +278,26 @@ export default function VarkQuestionnaire() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Credentials": "include"
         },
+        credentials: "include",
         body: JSON.stringify({
-          userId: userId, // Send the user ID
-          scores: results.scores,
           preference: results.preference,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
-      console.log("Results successfully sent to backend:", data);
+  
+      // Check the Content-Type header
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        console.log("Results successfully sent to backend:", data);
+      } else {
+        const text = await response.text();
+        console.log("Non-JSON response from backend:", text);
+      }
     } catch (error) {
       console.error("Error sending results to backend:", error);
     }
@@ -316,7 +320,7 @@ export default function VarkQuestionnaire() {
     setResults({ scores, preference, note });
 
     // Send results to the backend
-    sendResultsToBackend({ scores, preference });
+    sendResultsToBackend({ preference });
   };
 
   const resetQuestionnaire = () => {
@@ -327,12 +331,28 @@ export default function VarkQuestionnaire() {
       preference: null,
       note: null,
     });
+    navigate("/");
   };
 
   const currentQuestion = VARK_QUESTIONS[currentQuestionIndex];
   const progress = (Object.keys(selectedOptions).length / VARK_QUESTIONS.length) * 100;
   const isCurrentQuestionAnswered = !!selectedOptions[currentQuestion.id];
   const isLastQuestion = currentQuestionIndex === VARK_QUESTIONS.length - 1;
+
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate(); 
+  const { user } = useUser();
+  console.log(user?.publicMetadata.formSubmitted);
+
+  useEffect(() => {
+    if(isLoaded && !userId){
+      navigate("/sign-in");
+    }
+    if(user?.publicMetadata.formSubmitted){
+      alert("You have already submitted the questionnaire");
+      navigate("/");
+    }
+  }, [userId, isLoaded, navigate]);
 
   return (
     <div className="min-h-screen bg-[#f0f9f0] flex items-center justify-center p-4">
@@ -447,7 +467,6 @@ export default function VarkQuestionnaire() {
               <h3 className="text-lg font-semibold mb-2 text-emerald-800">What This Means</h3>
               <p className="text-emerald-700">{results.note}</p>
             </div>
-
             <Button onClick={resetQuestionnaire} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
               Take Questionnaire Again
             </Button>
@@ -457,205 +476,3 @@ export default function VarkQuestionnaire() {
     </div>
   );
 }
-
-// export default function VarkQuestionnaire() {
-//   const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({})
-//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-//   const [results, setResults] = useState<{
-//     scores: VarkScores | null
-//     preference: LearningPreference | null
-//     note: string | null
-//   }>({
-//     scores: null,
-//     preference: null,
-//     note: null,
-//   })
-
-//   const handleOptionSelect = (questionId: number, optionValue: string) => {
-//     setSelectedOptions((prev) => ({
-//       ...prev,
-//       [questionId]: optionValue,
-//     }))
-//   }
-
-//   const goToNextQuestion = () => {
-//     if (currentQuestionIndex < VARK_QUESTIONS.length - 1) {
-//       setCurrentQuestionIndex((prev) => prev + 1)
-//     }
-//   }
-
-//   const goToPreviousQuestion = () => {
-//     if (currentQuestionIndex > 0) {
-//       setCurrentQuestionIndex((prev) => prev - 1)
-//     }
-//   }
-
-//   const submitQuestionnaire = () => {
-//     // Validation
-//     if (Object.keys(selectedOptions).length !== VARK_QUESTIONS.length) {
-//       const missingQuestions = VARK_QUESTIONS.filter((q) => !selectedOptions[q.id]).map((q) => q.id)
-
-//       alert(`Please select an option for question(s): ${missingQuestions.join(", ")}`)
-//       return
-//     }
-
-//     const scores = calculateVarkScores(selectedOptions)
-//     const preference = determineLearningPreference(scores)
-//     const note = getLearningPreferenceNote(preference)
-//     setResults({ scores, preference, note })
-//   }
-
-//   const resetQuestionnaire = () => {
-//     setSelectedOptions({})
-//     setCurrentQuestionIndex(0)
-//     setResults({
-//       scores: null,
-//       preference: null,
-//       note: null,
-//     })
-//   }
-
-//   const currentQuestion = VARK_QUESTIONS[currentQuestionIndex]
-//   const progress = (Object.keys(selectedOptions).length / VARK_QUESTIONS.length) * 100
-//   const isCurrentQuestionAnswered = !!selectedOptions[currentQuestion.id]
-//   const isLastQuestion = currentQuestionIndex === VARK_QUESTIONS.length - 1
-
-//   //Protected Route
-//  const { userId, isLoaded } = useAuth();
-//  const navigate = useNavigate(); 
-
-//  const { user } = useUser()
-  
-//   // Access public metadata
-//   console.log(user?.publicMetadata)
-
-//  useEffect(() => {
-//    if(isLoaded && !userId){
-//      navigate("/sign-in");
-//    }
-//  }, [userId, isLoaded, navigate]);
-
-
-//   return (
-//     <div className="min-h-screen bg-[#f0f9f0] flex items-center justify-center p-4">
-//       <Card className="w-full max-w-2xl shadow-lg border-emerald-100">
-//         <CardHeader className="bg-emerald-600 text-white text-center rounded-t-lg">
-//           <CardTitle className="text-2xl font-bold">VARK Learning Styles Questionnaire</CardTitle>
-//           <CardDescription className="text-emerald-50">
-//             Complete all 16 questions to discover your learning style
-//           </CardDescription>
-//         </CardHeader>
-
-//         {!results.preference ? (
-//           <>
-//             <CardContent className="p-6 pt-8">
-//               <div className="mb-6">
-//                 <div className="flex justify-between text-sm text-emerald-700 mb-2">
-//                   <span>Progress</span>
-//                   <span>{Math.round(progress)}%</span>
-//                 </div>
-//                 <Progress value={progress} className="h-2 bg-emerald-100" />
-//               </div>
-
-//               <div className="mb-6">
-//                 <h3 className="text-lg font-semibold mb-4 text-emerald-800">
-//                   Question {currentQuestionIndex + 1} of {VARK_QUESTIONS.length}
-//                 </h3>
-//                 <p className="text-lg font-medium mb-4 text-emerald-900">{currentQuestion.text}</p>
-
-//                 <div className="space-y-3 mt-4">
-//                   {currentQuestion.options.map((option) => (
-//                     <div
-//                       key={option.value}
-//                       className={`flex items-start space-x-3 p-4 rounded-lg border transition-all ${
-//                         selectedOptions[currentQuestion.id] === option.value
-//                           ? "bg-emerald-50 border-emerald-400 shadow-sm"
-//                           : "border-gray-200 hover:border-emerald-200"
-//                       }`}
-//                       onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-//                     >
-//                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-emerald-600">
-//                         <div
-//                           className={`h-2.5 w-2.5 rounded-full bg-emerald-600 ${
-//                             selectedOptions[currentQuestion.id] === option.value ? "opacity-100" : "opacity-0"
-//                           }`}
-//                         />
-//                       </div>
-//                       <label
-//                         htmlFor={`q${currentQuestion.id}-${option.value}`}
-//                         className="text-base cursor-pointer leading-tight"
-//                       >
-//                         {option.label}
-//                       </label>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-//             </CardContent>
-
-//             <CardFooter className="flex justify-between p-6 pt-0">
-//               <Button
-//                 variant="outline"
-//                 onClick={goToPreviousQuestion}
-//                 disabled={currentQuestionIndex === 0}
-//                 className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
-//               >
-//                 <ChevronLeft className="w-4 h-4 mr-2" />
-//                 Previous
-//               </Button>
-
-//               {isLastQuestion ? (
-//                 <Button
-//                   onClick={submitQuestionnaire}
-//                   disabled={!isCurrentQuestionAnswered}
-//                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
-//                 >
-//                   Submit Questionnaire
-//                 </Button>
-//               ) : (
-//                 <Button
-//                   onClick={goToNextQuestion}
-//                   disabled={!isCurrentQuestionAnswered}
-//                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
-//                 >
-//                   Next
-//                   <ChevronRight className="w-4 h-4 ml-2" />
-//                 </Button>
-//               )}
-//             </CardFooter>
-//           </>
-//         ) : (
-//           <CardContent className="p-6">
-//             <div className="text-center mb-6">
-//               <h2 className="text-2xl font-bold mb-2 text-emerald-700">Your Learning Preference</h2>
-//               <div className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-full text-xl font-semibold">
-//                 {results.preference}
-//               </div>
-//             </div>
-
-//             <div className="bg-emerald-50 p-6 rounded-lg border border-emerald-100 mb-6">
-//               <h3 className="text-xl font-semibold mb-4 text-emerald-800">Your VARK Scores</h3>
-//               <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-//                 {Object.entries(results.scores || {}).map(([key, value]) => (
-//                   <div key={key} className="bg-white p-4 rounded-lg shadow-sm border border-emerald-100">
-//                     <p className="font-medium text-emerald-700 text-sm">{key.replace("_", "/")}</p>
-//                     <p className="text-emerald-600 font-bold text-2xl">{value}</p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-
-//             <div className="bg-white p-6 rounded-lg border border-emerald-100 mb-6">
-//               <h3 className="text-lg font-semibold mb-2 text-emerald-800">What This Means</h3>
-//               <p className="text-emerald-700">{results.note}</p>
-//             </div>
-
-//             <Button onClick={resetQuestionnaire} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-//               Take Questionnaire Again
-//             </Button>
-//           </CardContent>
-//         )}
-//       </Card>
-//     </div>
-//   )
-// }
