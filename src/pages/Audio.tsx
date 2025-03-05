@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import { Check, ChevronDown, Play, Pause, StopCircle, RefreshCw } from "lucide-react";
+import { useAuth, useUser } from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
 
 interface Source {
   title: string;
@@ -201,6 +203,22 @@ const Audio: React.FC = () => {
       speakText(responseData.answer, newTime);
     }
   };
+
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate(); 
+  const { user } = useUser();
+  const preference = user?.publicMetadata.preference;
+  // console.log(user?.publicMetadata.preference);
+
+  useEffect(() => {
+    if(isLoaded && !userId){
+      navigate("/sign-in");
+    }
+    if (preference) {
+      alert(`Your preferred learning style is ${preference}`);  
+      navigate(`/${preference}`);
+    }
+  }, [userId, isLoaded, navigate]);
 
   return (
     <section className="pt-32 pb-16 bg-green-100">

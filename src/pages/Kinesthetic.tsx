@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useAuth, useUser } from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
 
 interface Source {
   title: string;
@@ -15,12 +17,6 @@ interface ResponseData {
   varkStyle?: string;
 }
 
-const learningStyles = [
-  { id: "visual", name: "👀 Visual" },
-  { id: "auditory", name: "🎧 Auditory" },
-  { id: "readWrite", name: "📖 Reading/Writing" },
-  { id: "kinesthetic", name: "🖐️ Kinesthetic" },
-];
 
 const highlightKeywords = (text: string) => {
   const keywords = ["React", "JavaScript", "TypeScript", "API", "backend"]; // Customize these
@@ -57,8 +53,24 @@ const Kinesthetic: React.FC = () => {
     setLoading(false);
   };
 
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate(); 
+  const { user } = useUser();
+  const preference = user?.publicMetadata.preference;
+  // console.log(user?.publicMetadata.preference);
+
+  useEffect(() => {
+    if(isLoaded && !userId){
+      navigate("/sign-in");
+    }
+    if(preference){
+      alert(`Your preferred learning style is ${preference}`);  
+      navigate(`/${preference}`); 
+    }
+  }, [userId, isLoaded, navigate]);
+
   return (
-    <section className="pt-32 pb-16 bg-green-100">
+    <section className="min-h-screen pt-32 pb-16 bg-green-100">
       <div className="max-w-2xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8 text-green-800">Ask Your Kinesthetic Question</h2>
         <form onSubmit={(e) => { e.preventDefault(); submitQuery(message); }} className="space-y-6">

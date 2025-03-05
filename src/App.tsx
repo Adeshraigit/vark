@@ -12,6 +12,8 @@ import Read from './pages/Read.tsx';
 import Kinesthetic from './pages/Kinesthetic.tsx';
 import SignInPage from './components/auth/SignIn.tsx';
 import SignUpPage from './components/auth/SignUp.tsx';
+import NotFoundPage from './pages/404.tsx';
+import Redirect from './pages/redirect.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/questionnaire",
         element: <Vark/>
+      },
+      {
+        path: "/vark",
+        element: <Redirect/>
       },
       {
         element: <SignInPage />,
@@ -43,26 +49,30 @@ const router = createBrowserRouter([
         element: <Contact/>
       }, 
       {
-        path: "/visual",
+        path: "/Visual",
         element: <Visual/>
       },
       {
-        path: "/audio",
+        path: "/Aural",
         element: <Audio/>
       },
       {
-        path: "/read",
+        path: "/Read/Write",
         element: <Read/>
       },
       {
-        path: "/kinesthetic",
+        path: "/Kinesthetic",
         element: <Kinesthetic/>
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />
       }
     ]
   }
 ]);
 
-// Import your Publishable Key
+
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {

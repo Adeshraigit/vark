@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import { Check, ChevronDown } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useAuth, useUser } from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
 
 interface Source {
   title: string;
@@ -61,6 +63,22 @@ const Read: React.FC = () => {
     }
     setLoading(false);
   };
+
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate(); 
+  const { user } = useUser();
+  const preference = user?.publicMetadata.preference;
+  // console.log(user?.publicMetadata.preference);
+
+  useEffect(() => {
+    if(isLoaded && !userId){
+      navigate("/sign-in");
+    }
+    if (preference) {
+      alert(`Your preferred learning style is ${preference}`);  
+      navigate(`/${preference}`);
+    } 
+  }, [userId, isLoaded, navigate]);
 
   return (
     <section className="pt-32 pb-16 bg-green-100">

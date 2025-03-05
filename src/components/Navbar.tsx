@@ -26,7 +26,7 @@ function Navbar() {
           <Link to="/" className="hover:text-white transition-all duration-300">Home</Link>
           <Link to="/about" className="hover:text-white transition-all duration-300">About</Link>
           <Link to="/contact" className="hover:text-white transition-all duration-300">Contact</Link>
-          <Link to="/resources" className="hover:text-white transition-all duration-300">Resources</Link>
+          <Link to="/vark" className="hover:text-white transition-all duration-300">VARK</Link>
         </div>
         
         {/* Authentication & Mobile Menu Button */}
@@ -56,7 +56,7 @@ function Navbar() {
             <li><Link to="/" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Home</Link></li>
             <li><Link to="/about" onClick={closeMenu} className="block hover:text-white transition-all duration-300">About</Link></li>
             <li><Link to="/contact" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Contact</Link></li>
-            <li><Link to="/resources" onClick={closeMenu} className="block hover:text-white transition-all duration-300">Resources</Link></li>
+            <Link to="/vark" className="hover:text-white transition-all duration-300">VARK</Link>
             {!isSignedIn && (
               <li>
                 <Link

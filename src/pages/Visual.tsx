@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth, useUser } from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
 
 const Visual = () => {
   const [query, setQuery] = useState('');
@@ -40,9 +42,25 @@ const Visual = () => {
     }
   };
 
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate(); 
+  const { user } = useUser();
+  const preference = user?.publicMetadata.preference;
+  // console.log(user?.publicMetadata.preference);
+
+  useEffect(() => {
+    if(isLoaded && !userId){
+      navigate("/sign-in");
+    }
+    if (preference) {
+      alert(`Your preferred learning style is ${preference}`);  
+      navigate(`/${preference}`);
+    }
+  }, [userId, isLoaded, navigate]);
+
   return (
-    <section className="pt-32 pb-16 bg-[#f0f9f0] flex flex-col items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg border border-emerald-200">
+    <section className="min-h-screen pt-32 pb-16 bg-[#f0f9f0] flex flex-col items-center justify-center p-6">
+      <div className="max-w-2xl w-full  bg-white p-6 rounded-lg shadow-lg border border-emerald-200">
         <h2 className="text-3xl font-bold text-emerald-700 text-center mb-6">Diagram Generator</h2>
         <form onSubmit={generateDiagram} className="space-y-6">
           {/* Textarea for input query */}
