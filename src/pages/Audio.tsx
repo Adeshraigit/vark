@@ -55,6 +55,7 @@ const Audio: React.FC = () => {
     return () => {
       stopSpeech();
     };
+    isDragging
   }, []);
 
   /**
